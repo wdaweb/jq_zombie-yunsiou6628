@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./reset.css">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Creepster&family=Noto+Sans+TC:wght@100;300;400;500;700;900&family=Rubik+Wet+Paint&family=Special+Elite&display=swap">
+  <style>
+    body {
+      background: black;
+      height: 100vh;
+    }
+
+    #block1 {
+      width: 100%;
+      height: 180px;
+      text-align: center;
+      background: linear-gradient(0deg, black, rgb(11, 18, 27), rgb(22, 36, 54), rgb(41, 66, 100), rgb(63, 103, 156));
+      /* background: rgb(44, 66, 95); */
+    }
+
+    h1 {
+      line-height: 140px;
+      text-align: center;
+      font-family: 'Rubik Wet Paint', cursive;
+    }
+
+    h1 a {
+      font-size: 60px;
+      color: rgb(248, 247, 254);
+      text-decoration: none;
+      font-family: 'Rubik Wet Paint', cursive;
+      text-shadow: inset 0 0 20px #000000;
+    }
+
+
+    #block2 {
+      /* text-align: center; */
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 30px;
+      margin-top: 10px;
+      /* background: blue; */
+    }
+
+    /* > 指定下一層的 span，普通的 X Y 和 X > Y 的不同，後者僅僅選擇它的子對象 */
+    /* 不同字數在同一行分別置中對齊 => p 和 span 屬性是 inline ，為了使用同樣寬度置中，且文字需要在同一行，所以使用 inline-block */
+    #block2>span {
+      padding: 0px 40px;
+      display: inline-block;
+      width: 140px;
+      /* background: red; */
+    }
+
+    #btn-start {
+      border: none;
+      border-radius: 20%;
+      width: 120px;
+      height: 30px;
+      font-size: 20px;
+      font-weight: bold;
+      color: rgb(208, 40, 40);
+      background: rgb(255, 249, 249);
+      text-align: center;
+      box-shadow: 0 0 1em rgb(208, 40, 40), 0 0 1em rgb(208, 40, 40), 0 0 1em rgb(208, 40, 40);
+    }
+
+    #btn-start:hover {
+      width: 120px;
+      box-shadow: 0 0 1em rgb(63, 103, 156), 0 0 1em rgb(63, 103, 156), 0 0 1em rgb(63, 103, 156);
+      color: rgb(63, 103, 156);
+    }
+
+    /* 遊戲 */
+    #game {
+      width: 1000px;
+      height: 500px;
+      background: url('./edgar-lee-guizhen.jpg') 40% 70%;
+      overflow: hidden;
+      position: relative;
+      top: 120px;
+      margin: auto;
+      cursor: url(./cursor.png) 50 50, auto;
+    }
+
+    #game img {
+      height: 200px;
+      opacity: 0.8;
+      position: absolute;
+      /* 無法被選取 */
+      user-select: none;
+      /* 無法拖曳 */
+      -webkit-user-drag: none;
+      -webkit-user-select: none;
+    }
+
+    .smoke {
+      /* 忽略點擊事件 */
+      pointer-events: none;
+    }
+
+    .smoke_red {
+      /* 忽略點擊事件 */
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="block1">
+    <h1><a href="#btn-start">zombie ghost</a></h1>
+    <div id="block2">
+      <input type="button" value="開始遊戲" id="btn-start">
+      <br>
+      <br>
+      <span>分數 : <span id="text-score"> 0 </span>分</span>
+      <span>剩餘 : <span id="text-time"> 0 </span>秒</span>
+      <span>最高分數 : <span id="max-score"> 0 </span>分</span>
+      <span>殭屍鬼 : 扣 <span id="text-deduction"> 0 </span>分</span>
+    </div>
+  </div>
+
+  <div id="game"></div>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'
+    integrity='sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=='
+    crossorigin='anonymous'></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    let score = 0
+    let countdown = 10
+    let timer = 0
+    let max = 0
+    let deduction = 0
+    // 宣告 deduction 扣分
+    // let disappear = 3
+    // 宣告消失倒數秒數3秒
+
+    function move(zombie) {
+      const top = Math.round(Math.random() * 70) + '%'
+      const left = Math.round(Math.random() * 70) + '%'
+      zombie.stop().animate({ top, left }, 2000, function () {
+        move(zombie)
+      })
+    }
+
+    // 增加紅色扣分殭屍鬼(移動範圍.隨機出現)
+    function move(zombie_red) {
+      const top = Math.round(Math.random() * 70) + '%'
+      const left = Math.round(Math.random() * 70) + '%'
+      zombie_red.stop().animate({ top, left }, 2000, function () {
+        move(zombie_red)
+      })
+    }
+
+    $('#btn-start').click(function () {
+      // 停用按鈕
+      $(this).attr('disabled', true)
+      // 重設
+      score = 0
+      $('#text-score').text(score)
+      countdown = 30
+      $('#text-time').text(countdown)
+      deduction = 0
+      $('#text-deduction').text(deduction)
+      //  deduction = 0 重設扣分歸0
+
+
+      // 開始遊戲
+      timer = setInterval(function () {
+        // 倒數
+        countdown--
+        $('#text-time').text(countdown)
+
+        const random1 = Math.round(Math.random() * 10)
+        if (random1 > 3 && $('#game .zombie').length < 3) {
+          const top = Math.round(Math.random() * 90) + '%'
+          const left = Math.round(Math.random() * 90) + '%'
+          const zombie = $(`<img src="./02133937_17.gif" class="zombie" style="top: ${top}; left: ${left}">`)
+          $('#game').append(zombie)
+          move(zombie)
+        }
+
+        const random2 = Math.round(Math.random() * 10)
+        if (random2 > 3 && $('#game .zombie').length < 3) {
+          const top = Math.round(Math.random() * 90) + '%'
+          const left = Math.round(Math.random() * 90) + '%'
+          const zombie = $(`<img src="./02133937_02.gif" class="zombie" style="top: ${top}; left: ${left}">`)
+          $('#game').append(zombie)
+          move(zombie)
+        }
+
+        const random3 = Math.round(Math.random() * 10)
+        if (random3 > 3 && $('#game .zombie').length < 3) {
+          const top = Math.round(Math.random() * 90) + '%'
+          const left = Math.round(Math.random() * 90) + '%'
+          const zombie = $(`<img src="./02133937_01.gif" class="zombie" style="top: ${top}; left: ${left}">`)
+          $('#game').append(zombie)
+          move(zombie)
+        }
+
+        const random4 = Math.round(Math.random() * 8)
+        if (random4 > 3 && $('#game .zombie_red').length < 3) {
+          const top = Math.round(Math.random() * 90) + '%'
+          const left = Math.round(Math.random() * 90) + '%'
+          const zombie_red = $(`<img src="./02133937_51100.gif" class="zombie_red" style="top: ${top}; left: ${left}">`)
+          $('#game').append(zombie_red)
+          move(zombie_red)
+        }
+
+        if (countdown <= 0) {
+
+          // 最高分
+          if (score > max) {
+            max = score
+          }
+          $('#max-score').text(score)
+
+
+          clearInterval(timer)
+          // 清空遊戲區域
+          $('#game img').remove()
+          // 重新啟用開始按鈕
+          $('#btn-start').attr('disabled', false)
+          Swal.fire({
+            title: '遊戲結束',
+            text: `時間到，你得到 ${score} 分`,
+            icon: 'info'
+          })
+        }
+      }, 1000)
+    })
+
+
+    // 點擊
+    $('#game').on('click', '.zombie', function () {
+      $(this).attr('src', './smoke.gif')
+      $(this).removeClass('zombie').addClass('smoke')
+      $(this).stop()
+      score++
+      $('#text-score').text(score)
+    })
+
+    $('#game').on('click', '.zombie_red', function () {
+      $(this).attr('src', './smoke-red.gif')
+      $(this).removeClass('zombie_red').addClass('smoke_red')
+      $(this).stop()
+      score--
+      $('#text-score').text(score)
+
+      deduction--
+      $('#text-deduction').text(deduction) // 顯示抓到幾隻紅色 = 扣幾分
+    })
+
+  </script>
+</body>
+
+</html>
