@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catch the eggs</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div id="container">
+
+        <!-- 得分區域 -->
+        <div id="score_area">
+            Score : <span id="score"> 0 </span> &nbsp; &nbsp; | &nbsp; &nbsp;
+            Life : <span id="life"> 0 </span> &nbsp; &nbsp; | &nbsp; &nbsp; Use mouse to control
+        </div>
+
+        <!-- 分支 -->
+        <div id="branch"></div>
+
+        <!-- 母雞 -->
+        <div id="hen1" class="hen"></div>
+        <div id="hen2" class="hen"></div>
+        <div id="hen3" class="hen"></div>
+
+        <!-- 雞蛋 -->
+        <div id="egg1" class="egg" data-bullseye="1"></div>
+        <div id="egg2" class="egg" data-bullseye="2"></div>
+        <div id="egg3" class="egg" data-bullseye="3"></div>
+
+        <!-- 破掉的蛋 -->
+        <div id="bullseye1" class="bullseye"></div>
+        <div id="bullseye2" class="bullseye"></div>
+        <div id="bullseye3" class="bullseye"></div>
+
+        <!-- 籃子 -->
+        <div id="basket">
+            <span id="score_1"></span>
+        </div>
+
+        <!-- 地面 -->
+        <div id="floor"></div>
+
+        <!-- 重新開始 按鈕 -->
+        <button id="restart">Restart</button>
+
+    </div>
+
+    <!-- jquery 連結 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- 檢測 連結 -->
+    <script src="./collision_detection.js"></script>
+
+    <!-- 雞蛋掉下去沒接到 扣一條生命，原本 5 條生命 => life 5 -->
+    <script src="./variables.js"></script>
+
+    <!-- 執行遊戲 -->
+    <script src="./script.js"></script>
+    <script src="./functions.js"></script>
+
+</body>
+</html>

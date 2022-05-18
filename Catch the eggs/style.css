@@ -1,0 +1,161 @@
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+#container {
+    width: 90%;
+    height: 90%;
+    margin-left: 5%;
+    position: relative;
+    overflow: hidden;
+
+    background:
+        linear-gradient(135deg, lemonchiffon 21px, white 22px, white 24px, transparent 24px, transparent 67px, white 67px, white 69px, transparent 69px),
+        linear-gradient(225deg, lemonchiffon 21px, white 22px, white 24px, transparent 24px, transparent 67px, white 67px, white 69px, transparent 69px)0 64px;
+    background-color: lemonchiffon;
+    background-size: 64px 128px;
+}
+
+#score_area {
+    text-align: center;
+    font-size: 25px;
+    padding: 0.2%;
+    background-color: sandybrown;
+    color: white;
+}
+
+#branch {
+    position: absolute;
+    height: 2%;
+    width: 100%;
+    background-color: sandybrown;
+    top: 23%;
+}
+
+.hen {
+    position: absolute;
+    height: 16%;
+    width: 7%;
+    top: 10%;
+    background: url('./hen.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    z-index: 100;
+}
+
+/* 30%.50%.70% - 7%/2 => 雞的左邊在30%.50%.70%的位置 - 雞身體寬度的一半才會置中 */
+#hen1 {
+    left: calc(30% - 7%/2);
+}
+
+#hen2 {
+    left: calc(50% - 7%/2);
+}
+
+#hen3 {
+    left: calc(70% - 7%/2);
+}
+
+.egg {
+    position: absolute;
+    top: 18%;
+    height: 5%;
+    width: 2%;
+    background: url('./egg2.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    z-index: 99;
+}
+
+/* 30%.50%.70% - 2%/2 => 蛋的左邊在30%.50%.70%的位置 - 蛋身體寬度的一半才會置中  */
+#egg1 {
+    left: calc(30% - 2%/2);
+}
+
+#egg2 {
+    left: calc(50% - 2%/2);
+}
+
+#egg3 {
+    left: calc(70% - 2%/2);
+}
+
+/* 破掉的蛋 */
+.bullseye {
+    display: none;
+    position: absolute;
+    bottom: 0.8%;
+    height: 10%;
+    width: 7%;
+    background: url('./egg4.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    z-index: 11;
+}
+
+/* 30%.50%.70% - 2%/2 => 破掉的蛋的左邊在30%.50%.70%的位置 - 破掉的蛋身體寬度的一半才會置中  */
+#bullseye1 {
+    left: calc(30% - 7%/2);
+}
+
+#bullseye2 {
+    left: calc(50% - 7%/2);
+}
+
+#bullseye3 {
+    left: calc(70% - 7%/2);
+}
+
+#floor {
+    position: absolute;
+    height: 7%;
+    width: 100%;
+    background-color: saddlebrown;
+    bottom: 0;
+    z-index: 10;
+}
+
+#basket {
+    height: 140px;
+    width: 130px;
+    position: absolute;
+    bottom: 2%;
+    background: url('./basket.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    text-align: center;
+
+    z-index: 11;
+}
+
+#score_1 {
+    position: absolute;
+    color: #424242;
+    font-size: 30px;
+    top: 45%;
+    left: 30%;
+}
+
+
+#restart {
+    border: 0;
+    position: absolute;
+    height: 15%;
+    width: 100%;
+    background-color: rgb(213, 85, 43);
+    color: white;
+    top: 40%;
+    font-size: 45px;
+    display: none;
+    cursor: pointer;
+}
